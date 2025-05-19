@@ -1,14 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const { addTool, getAllTools, getToolById } = require('../controllers/tools.controller');
+const {
+  addTool,
+  getAllTools,
+  getToolById
+} = require('../controllers/tools.controller');
 
-// 🛠 Add a new tool
+// ➕ POST: Add a new tool
 router.post('/add', addTool);
 
-// 📥 Get all tools
+// 📥 GET: Retrieve all tools
 router.get('/all', getAllTools);
 
-// 🔍 Get a tool by ID
+// 🔍 GET: Retrieve a specific tool by ID
 router.get('/:id', getToolById);
 
 module.exports = router;

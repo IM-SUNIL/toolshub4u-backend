@@ -1,4 +1,4 @@
-const Tool = require('../models/Tool.model');  // Tool model import
+const Tool = require('../models/Tool.model'); // Tool model import
 
 // ➕ Add a new tool
 const addTool = async (req, res) => {
@@ -19,14 +19,16 @@ const addTool = async (req, res) => {
     await newTool.save();
 
     res.status(201).json({
-      message: 'Tool added successfully!',
-      tool: newTool,
+      success: true,
+      data: newTool,
+      error: null,
     });
   } catch (error) {
     console.error(error);
     res.status(500).json({
-      message: 'Failed to add tool',
-      error: error.message,
+      success: false,
+      data: null,
+      error: error.message || 'Failed to add tool',
     });
   }
 };
@@ -35,11 +37,16 @@ const addTool = async (req, res) => {
 const getAllTools = async (req, res) => {
   try {
     const tools = await Tool.find().populate('categoryId');
-    res.status(200).json({ tools });
+    res.status(200).json({
+      success: true,
+      data: tools,
+      error: null,
+    });
   } catch (error) {
     res.status(500).json({
-      message: 'Failed to fetch tools',
-      error: error.message,
+      success: false,
+      data: null,
+      error: error.message || 'Failed to fetch tools',
     });
   }
 };
@@ -48,14 +55,25 @@ const getAllTools = async (req, res) => {
 const getToolById = async (req, res) => {
   try {
     const tool = await Tool.findById(req.params.id).populate('categoryId');
+
     if (!tool) {
-      return res.status(404).json({ message: 'Tool not found' });
+      return res.status(404).json({
+        success: false,
+        data: null,
+        error: 'Tool not found',
+      });
     }
-    res.status(200).json(tool);
+
+    res.status(200).json({
+      success: true,
+      data: tool,
+      error: null,
+    });
   } catch (error) {
     res.status(500).json({
-      message: 'Failed to fetch tool',
-      error: error.message,
+      success: false,
+      data: null,
+      error: error.message || 'Failed to fetch tool',
     });
   }
 };
